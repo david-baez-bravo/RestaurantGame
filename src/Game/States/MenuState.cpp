@@ -2,9 +2,19 @@
 
 MenuState::MenuState() {
 	string text = "Start";
-	startButton = new Button(ofGetWidth()/2 - text.length()*20, ofGetHeight()/2 - text.length()*8, 64, 50, text, 30);
+	int font = 30;
+	fonts.load("TechnoRaceItalic-eZRWe.otf", font);
+    ofRectangle bounds = fonts.getStringBoundingBox(text, 0, 0);
+    int x = (ofGetWidth() - bounds.width) / 2;
+	startButton = new Button(x, ofGetHeight()/2, bounds.width, bounds.height, text, font);
+
+
 	string titleText = "Dinner Dash";
-    title = new Button(ofGetWidth()/2 - text.length()*50, ofGetHeight()/2 - text.length()*35, 64, 50, titleText, 72);
+	font = 72;
+	fonts.load("TechnoRaceItalic-eZRWe.otf", font);
+    bounds = fonts.getStringBoundingBox(titleText, 0, 0);
+    x = (ofGetWidth() - bounds.width) / 2;
+    title = new Button(x, 200,  bounds.width, bounds.height, titleText, font);
 }
 
 void MenuState::tick() {
@@ -14,17 +24,34 @@ void MenuState::tick() {
 		setFinished(true);
 	}
 }
+
+void drawCenteredString(const string& text, int y, ofTrueTypeFont fonts) {
+	ofRectangle bounds = fonts.getStringBoundingBox(text, 0, 0);
+    int x = (ofGetWidth() - bounds.width) / 2;
+    fonts.drawString(text, x, y);
+}
+
 void MenuState::render() {
-	string text = "Start";
 	ofSetBackgroundColor(255, 40, 35);
 	startButton->render();
 	title->render();
 	fonts.load("TechnoRaceItalic-eZRWe.otf", 15);
-    fonts.drawString("Press 'e' to pickup ingredients", ofGetWidth()/2 - text.length()*25, ofGetHeight()/2 + text.length()*25);
-    fonts.drawString("Press 's' to serve clients", ofGetWidth()/2 - text.length()*22, ofGetHeight()/2 + text.length()*30);
-	fonts.drawString("Press 'u' to remove the last added ingredient", ofGetWidth()/2 - text.length()*35, ofGetHeight()/2 + text.length()*20);
-	fonts.drawString("Press right arrow key to move right", ofGetWidth()/2 - text.length()*31, ofGetHeight()/2 + text.length()*35);
-	fonts.drawString("Press left arrow key to move left", ofGetWidth()/2 - text.length()*30, ofGetHeight()/2 + text.length()*40);
+	int y = ofGetHeight() / 2 + 125;
+	drawCenteredString("Press 'e' to pickup ingredients", y, fonts);
+	y += 25;
+	drawCenteredString("Press 's' to serve clients", y, fonts);
+	y += 25;
+	drawCenteredString("Press 'u' to remove the last added ingredient", y, fonts);
+	y += 25;
+	drawCenteredString("Press right arrow key to move right", y, fonts);
+	y += 25;
+	drawCenteredString("Press left arrow key to move left", y, fonts);
+	y += 25;
+	drawCenteredString("Serve clients before they leave", y, fonts);
+	y += 25;
+	ofSetColor(ofColor::blue);
+	drawCenteredString("Be wary of Inspectors", y, fonts);
+	ofSetColor(ofColor::white);
 }
 
 void MenuState::keyPressed(int key){

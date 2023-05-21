@@ -27,8 +27,11 @@ void Button::tick(){
 
 }
 
-void Button::mousePressed(int x, int y){
-    if(xPos + width >= x && x >= xPos &&  yPos + height >= y && y >= yPos){
+void Button::mousePressed(int x, int y) {
+    fonts.load("TechnoRaceItalic-eZRWe.otf", font);
+    ofRectangle bounds = fonts.getStringBoundingBox(buttonText, xPos, yPos);
+    
+    if (bounds.inside(x, y)) {
         pressed = true;
         pressedCounter = 10;
     }
@@ -37,7 +40,7 @@ void Button::mousePressed(int x, int y){
 void Button::render(){
     fonts.load("TechnoRaceItalic-eZRWe.otf", font);
     ofSetColor(255);
-    fonts.drawString(buttonText, xPos+width/2, yPos+height/2);
+    fonts.drawString(buttonText, xPos, yPos);
 }
 
 bool Button::wasPressed(){
